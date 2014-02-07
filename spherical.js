@@ -1,6 +1,6 @@
 /* global Impetus */
 
-window['Pano'] = function(cfg) {
+window['Spherical'] = function(cfg) {
     'use strict';
     
 	var _container;
@@ -14,7 +14,7 @@ window['Pano'] = function(cfg) {
     var _fsButton;
     var _supportsFullscreenAPI = !!document.webkitCancelFullScreen || !!document.mozCancelFullScreen || !!document.cancelFullScreen;
 	
-	var _cubeTemplate = '<div class="pano-cube"><div class="pano-front" style="background-image:url({{fImg}});"></div><div class="pano-back" style="background-image:url({{bImg}});"></div><div class="pano-left" style="background-image:url({{lImg}});"></div><div class="pano-right" style="background-image:url({{rImg}});"></div><div class="pano-top" style="background-image:url({{uImg}});"></div><div class="pano-bottom" style="background-image:url({{dImg}});"></div></div>';
+	var _cubeTemplate = '<div class="spherical-cube"><div class="spherical-front" style="background-image:url({{fImg}});"></div><div class="spherical-back" style="background-image:url({{bImg}});"></div><div class="spherical-left" style="background-image:url({{lImg}});"></div><div class="spherical-right" style="background-image:url({{rImg}});"></div><div class="spherical-top" style="background-image:url({{uImg}});"></div><div class="spherical-bottom" style="background-image:url({{dImg}});"></div></div>';
 	
 	
 	var _supportsPreserve3d = (function() {
@@ -103,7 +103,7 @@ window['Pano'] = function(cfg) {
             if (_supportsFullscreenAPI) {
                 document.webkitExitFullscreen();
             } else {
-                _container.className = 'pano-container';
+                _container.className = 'spherical-container';
                 _isFullscreen = !_isFullscreen;
             }
         } else {
@@ -111,7 +111,7 @@ window['Pano'] = function(cfg) {
                 _container.webkitRequestFullscreen();
                 _fsButton.style.display = 'none';
             } else {
-                _container.className = 'pano-container pano-pseudo-fs';
+                _container.className = 'spherical-container spherical-pseudo-fs';
                 _isFullscreen = !_isFullscreen;
             }
         }
@@ -142,7 +142,7 @@ window['Pano'] = function(cfg) {
 		if (cfg.enableFullscreen === false) _enableFullscreen = false;
 		_container = (typeof cfg.container === 'string') ? document.querySelector(cfg.container) : cfg.container;
 		
-		_container.classList.add('pano-container');
+		_container.classList.add('spherical-container');
 		_container.innerHTML = _template(_cubeTemplate, {
 			fImg: cfg.front,
 			bImg: cfg.back,
@@ -152,7 +152,7 @@ window['Pano'] = function(cfg) {
 			dImg: cfg.bottom
 		});
 		
-		_cube = _container.querySelector('.pano-cube');
+		_cube = _container.querySelector('.spherical-cube');
 		
 		this.resetZ();
 		
@@ -172,7 +172,7 @@ window['Pano'] = function(cfg) {
 		
 		if (_enableFullscreen && _supportsFullscreenAPI) {
             _fsButton = document.createElement('button');
-            _fsButton.className = 'pano-fullbutton';
+            _fsButton.className = 'spherical-fullbutton';
             _fsButton.onclick = this.toggleFullscreen;
             _container.appendChild(_fsButton);
             
