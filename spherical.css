@@ -1,5 +1,5 @@
 .spherical-container {
-    position: relative;
+	position: relative;
 	overflow: hidden;
 	-webkit-user-select: none;
 	   -moz-user-select: -moz-none;
@@ -25,67 +25,65 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	transform-style: preserve-3d;
-	/*-webkit-backface-visibility: hidden;
-	        backface-visibility: hidden;*/
 }
 
 .spherical-cube .spherical-front {
 	-webkit-transform: translateZ(-398px);
-			transform: translateZ(-398px);
+	        transform: translateZ(-398px);
 }
 .spherical-cube .spherical-back {
 	-webkit-transform: rotateY(180deg) translateZ(-398px);
-			transform: rotateY(180deg) translateZ(-398px);
+	        transform: rotateY(180deg) translateZ(-398px);
 }
 .spherical-cube .spherical-left {
 	-webkit-transform: rotateY(90deg) translateZ(-398px);
-			transform: rotateY(90deg) translateZ(-398px);
+	        transform: rotateY(90deg) translateZ(-398px);
 }
 .spherical-cube .spherical-right {
 	-webkit-transform: rotateY(-90deg) translateZ(-398px);
-			transform: rotateY(-90deg) translateZ(-398px);
+	        transform: rotateY(-90deg) translateZ(-398px);
 }
 .spherical-cube .spherical-top {
 	-webkit-transform: rotateX(-90deg) translateZ(-398px);
-			transform: rotateX(-90deg) translateZ(-398px);
+	        transform: rotateX(-90deg) translateZ(-398px);
 }
 .spherical-cube .spherical-bottom {
 	-webkit-transform: rotateX(90deg) translateZ(-398px);
-			transform: rotateX(90deg) translateZ(-398px);
+	        transform: rotateX(90deg) translateZ(-398px);
 }
 
 .spherical-container:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
+	width: 100% !important;
+	height: 100% !important;
 }
 .spherical-container:full-screen {
-    width: 100% !important;
-    height: 100% !important;
+	width: 100% !important;
+	height: 100% !important;
 }
 
 .spherical-container.spherical-pseudo-fs {
-    position: fixed !important;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: auto !important;
-    height: auto !important;
-    z-index: 1;
+	position: fixed !important;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: auto !important;
+	height: auto !important;
+	z-index: 1;
 }
 
 .spherical-fullbutton {
-    width: 16px;
-    height: 16px;
-    padding: 12px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACmWAJHAAAAC3RSTlMAFYTc93m7xIwoJdcuXkAAAABcSURBVAjXY9i9exMDg/bu3UBGAAMDK4ixRYCBgdEbyPA2ZGAQ3rKbYZPwNgaGbENtBgXGLAaGZQJMDMSAAMZMBoZpAqwMW4W3MzBUG0YjDERYsbuBgYEDaCnMGQAADCA2TyNOPQAAAABJRU5ErkJggg==) transparent no-repeat center;
-    opacity: 0.4;
-    cursor: pointer;
-    border: 0 none;
-    z-index: 1;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+	width: 16px;
+	height: 16px;
+	padding: 12px;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACmWAJHAAAAC3RSTlMAFYTc93m7xIwoJdcuXkAAAABcSURBVAjXY9i9exMDg/bu3UBGAAMDK4ixRYCBgdEbyPA2ZGAQ3rKbYZPwNgaGbENtBgXGLAaGZQJMDMSAAMZMBoZpAqwMW4W3MzBUG0YjDERYsbuBgYEDaCnMGQAADCA2TyNOPQAAAABJRU5ErkJggg==) transparent no-repeat center;
+	opacity: 0.4;
+	cursor: pointer;
+	border: 0 none;
+	z-index: 1;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	-webkit-transform: translateZ(0);
+	        transform: translateZ(0);
 }
