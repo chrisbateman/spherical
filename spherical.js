@@ -13,6 +13,7 @@ window['Spherical'] = function(cfg) {
 	var _isFullscreen = false;
 	var _fsButton;
 	var _supportsFullscreenAPI = !!document.webkitCancelFullScreen || !!document.mozCancelFullScreen || !!document.cancelFullScreen;
+	var _fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
 	
 	var _cubeTemplate = '<div class="spherical-cube"><div class="spherical-front" style="background-image:url({{fImg}});"></div><div class="spherical-back" style="background-image:url({{bImg}});"></div><div class="spherical-left" style="background-image:url({{lImg}});"></div><div class="spherical-right" style="background-image:url({{rImg}});"></div><div class="spherical-top" style="background-image:url({{uImg}});"></div><div class="spherical-bottom" style="background-image:url({{dImg}});"></div></div>';
 	
@@ -98,17 +99,39 @@ window['Spherical'] = function(cfg) {
 		});
 	};
 	
+	var _requestFullscreen = function(node) {
+		if (node.requestFullscreen ) {
+			node.requestFullscreen();
+		} else if (node.mozRequestFullScreen ) {
+			node.mozRequestFullScreen();
+		} else if (node.webkitRequestFullScreen ) {
+			node.webkitRequestFullScreen();
+		}
+	};
+	
+	var _exitFullscreen = function() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		}
+	};
+	
 	this.toggleFullscreen = function() {
 		if (_isFullscreen) {
 			if (_supportsFullscreenAPI) {
-				document.webkitExitFullscreen();
+				_exitFullscreen();
 			} else {
 				_container.className = 'spherical-container';
 				_isFullscreen = !_isFullscreen;
 			}
 		} else {
 			if (_supportsFullscreenAPI) {
-				_container.webkitRequestFullscreen();
+				_requestFullscreen(_container);
 				_fsButton.style.display = 'none';
 			} else {
 				_container.className = 'spherical-container spherical-pseudo-fs';
@@ -122,7 +145,7 @@ window['Spherical'] = function(cfg) {
 		this.resetZ();
 		_isFullscreen = !_isFullscreen;
 		
-		if (!document.webkitFullscreenElement && _supportsFullscreenAPI) {
+		if ((!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) && _supportsFullscreenAPI) {
 			_fsButton.style.display = '';
 		}
 	}.bind(this);
@@ -170,15 +193,15 @@ window['Spherical'] = function(cfg) {
 		
 		_addZoomControls();
 		
-		if (_enableFullscreen && _supportsFullscreenAPI) {
+		if (_enableFullscreen && _supportsFullscreenAPI && _fullscreenEnabled) {
 			_fsButton = document.createElement('button');
 			_fsButton.className = 'spherical-fullbutton';
 			_fsButton.onclick = this.toggleFullscreen;
 			_container.appendChild(_fsButton);
 			
-		   //_container.addEventListener('dblclick', this.toggleFullscreen);
+			//_container.addEventListener('dblclick', this.toggleFullscreen);
 			
-			_container.onwebkitfullscreenchange = _container.onmozfullscreenchange = _container.onfullscreenchange = _onFullscreenChange;
+			document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = _onFullscreenChange;
 		}
 		
 	}).bind(this)();
