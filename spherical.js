@@ -92,27 +92,29 @@
 		 */
 		var _addZoomControls = function() {
 			var _onScroll = function(ev) {
-				var delta = Math.max(-1, Math.min(1, (ev.wheelDelta || -ev.detail)));
+				ev.preventDefault();
+				var delta = Math.max(-1, Math.min(1, (ev.wheelDelta || -ev.deltaY)));
 				_increaseZoom(delta * 15);
 			};
-			document.addEventListener('mousewheel', _onScroll);
-			document.addEventListener('DOMMouseScroll', _onScroll);
 			
+			_container.addEventListener('wheel', _onScroll);
 			
-			// TEMPORARY
-			var _lastScale = 1;
-			var _onGestureChange = function(ev) {
-				_increaseZoom((ev.scale - _lastScale) * 50);
-				_lastScale = ev.scale;
-			};
-			document.body.addEventListener('gesturestart', function(e) {
-				_imp.pause();
-				_lastScale = 1;
-			});
-			document.body.addEventListener('gesturechange', _onGestureChange);
-			document.body.addEventListener('gestureend', function(e) {
-				_imp.unpause();
-			});
+			// NEEDS WORK
+			if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+				var _lastScale = 1;
+				var _onGestureChange = function(ev) {
+					_increaseZoom((ev.scale - _lastScale) * 50);
+					_lastScale = ev.scale;
+				};
+				document.body.addEventListener('gesturestart', function(e) {
+					_imp.pause();
+					_lastScale = 1;
+				});
+				document.body.addEventListener('gesturechange', _onGestureChange);
+				document.body.addEventListener('gestureend', function(e) {
+					_imp.unpause();
+				});
+			}
 		};
 		
 		/**
@@ -146,6 +148,7 @@
 		
 		/**
 		 * toggles current fullscreen state
+		 * @public
 		 */
 		this.toggleFullscreen = function() {
 			if (_isFullscreen) {
@@ -181,6 +184,7 @@
 		
 		/**
 		 * sets the z value based on the container size
+		 * @public
 		 */
 		this.resetZ = function() {
 			_cubeZ = (Math.sqrt(_container.clientWidth * _container.clientHeight) / 2.5);
@@ -214,7 +218,7 @@
 			_imp = new Impetus({
 				source: _cube,
 				boundY: [-90, 90],
-				multiplier: 0.13,
+				multiplier: 0.2,
 				update: function(x, y) {
 					_cubeRotateX = x;
 					_cubeRotateY = y;
