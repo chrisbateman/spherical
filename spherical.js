@@ -17,6 +17,9 @@
 		var _fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
 		var _cubeTemplate = '<div class="spherical-cube"><div class="spherical-front" style="background-image:url({{fImg}});"></div><div class="spherical-back" style="background-image:url({{bImg}});"></div><div class="spherical-left" style="background-image:url({{lImg}});"></div><div class="spherical-right" style="background-image:url({{rImg}});"></div><div class="spherical-top" style="background-image:url({{uImg}});"></div><div class="spherical-bottom" style="background-image:url({{dImg}});"></div></div>';
 		
+		/**
+		 * @return {boolean} whether the browser supports preserve-3d
+		 */
 		var _supportsPreserve3d = (function() {
 			var properties = [
 				'transformStyle',
@@ -35,21 +38,46 @@
 			return false;
 		})();
 		
+		/**
+		 * simple templating
+		 * @param  {string} template
+		 * @param  {object} data
+		 * @return {string}
+		 */
 		var _template = function(template, data) {
 			return template.replace(/\{\{([\w]+)\}\}/ig, function(a, b) {
 				return data[b] || '';
 			});
 		};
 		
-		
+		/**
+		 * sets the current transform values
+		 */
 		var _updateCubeTransform = function() {
 			_cube.style.webkitTransform = _cube.style.transform = 'translate3d(0, 0, '+_cubeZ+'px) rotateX('+_cubeRotateY+'deg) rotateY('+(-_cubeRotateX)+'deg)';
 		};
 		
+		/**
+		 * sets the current perspective
+		 */
 		var _updatePerspective = function() {
 			_container.style.webkitPerspective = _container.style.perspective = _cubeZ + 'px';
 		};
 		
+		/**
+		 * clamps and sets the z value
+		 * @param {number} z
+		 */
+		var _setCubeZ = function(z) {
+			_cubeZ = Math.max(Math.min(1500, z), 130);
+			_updateCubeTransform();
+			_updatePerspective();
+		};
+		
+		/**
+		 * calculates the z value
+		 * @param  {number} amt
+		 */
 		var _increaseZoom = function(amt) {
 			amt /= 15;
 			amt = ((0.2 * _cubeZ) - 8.2) * amt;
@@ -59,18 +87,13 @@
 			_setCubeZ(amt);
 		};
 		
-		var _setCubeZ = function(z) {
-			_cubeZ = Math.max(Math.min(1500, z), 130);
-			_updateCubeTransform();
-			_updatePerspective();
-		};
-		
+		/**
+		 * initializes zooming behavior
+		 */
 		var _addZoomControls = function() {
 			var _onScroll = function(ev) {
 				var delta = Math.max(-1, Math.min(1, (ev.wheelDelta || -ev.detail)));
-				//document.getElementById('logger').innerHTML = delta;
 				_increaseZoom(delta * 15);
-				//_setCubeZ(_cubeZ + (delta * 15));
 			};
 			document.addEventListener('mousewheel', _onScroll);
 			document.addEventListener('DOMMouseScroll', _onScroll);
@@ -79,13 +102,7 @@
 			// TEMPORARY
 			var _lastScale = 1;
 			var _onGestureChange = function(ev) {
-				//document.getElementById('logger').innerHTML = ev.scale.toFixed(2) + ' | ' + (ev.scale - _lastScale).toFixed(2);
-				//document.getElementById('logger').innerHTML = ev.scale.toFixed(2) + ' - ' + _cubeZ.toFixed(1);
-				
 				_increaseZoom((ev.scale - _lastScale) * 50);
-				//_setCubeZ(_cubeZ += (ev.scale - _lastScale) * 350);
-				//_setCubeZ(_cubeZ *= ev.scale);
-				
 				_lastScale = ev.scale;
 			};
 			document.body.addEventListener('gesturestart', function(e) {
@@ -98,6 +115,10 @@
 			});
 		};
 		
+		/**
+		 * cross-browser requestFullscreen
+		 * @param  {Element} node
+		 */
 		var _requestFullscreen = function(node) {
 			if (node.requestFullscreen ) {
 				node.requestFullscreen();
@@ -108,6 +129,9 @@
 			}
 		};
 		
+		/**
+		 * cross-browser exitFullscreen
+		 */
 		var _exitFullscreen = function() {
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
@@ -120,6 +144,9 @@
 			}
 		};
 		
+		/**
+		 * toggles current fullscreen state
+		 */
 		this.toggleFullscreen = function() {
 			if (_isFullscreen) {
 				if (_supportsFullscreenAPI) {
@@ -140,6 +167,9 @@
 			
 		};
 		
+		/**
+		 * called when fullscreen status changes
+		 */
 		var _onFullscreenChange = function() {
 			this.resetZ();
 			_isFullscreen = !_isFullscreen;
@@ -149,7 +179,9 @@
 			}
 		}.bind(this);
 		
-		
+		/**
+		 * sets the z value based on the container size
+		 */
 		this.resetZ = function() {
 			_cubeZ = (Math.sqrt(_container.clientWidth * _container.clientHeight) / 2.5);
 			
@@ -198,13 +230,12 @@
 				_fsButton.onclick = this.toggleFullscreen;
 				_container.appendChild(_fsButton);
 				
-				//_container.addEventListener('dblclick', this.toggleFullscreen);
-				
 				document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = _onFullscreenChange;
 			}
 			
 		}).bind(this)();
 	};
+	
 	
 	if (typeof define === "function" && define.amd) {
 		define('spherical', ['impetus'], Spherical);
