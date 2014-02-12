@@ -65,6 +65,17 @@
 		};
 		
 		/**
+		 * sets the z value based on the container size
+		 * @public
+		 */
+		this.resetZ = function() {
+			_cubeZ = (Math.sqrt(_container.clientWidth * _container.clientHeight) / 2.5);
+			
+			_updateCubeTransform();
+			_updatePerspective();
+		};
+		
+		/**
 		 * clamps and sets the z value
 		 * @param {number} z
 		 */
@@ -78,7 +89,7 @@
 		 * calculates the z value
 		 * @param  {number} amt
 		 */
-		var _increaseZoom = function(amt) {
+		var _adjustZoom = function(amt) {
 			amt /= 15;
 			amt = ((0.2 * _cubeZ) - 8.2) * amt;
 			
@@ -94,7 +105,7 @@
 			var _onScroll = function(ev) {
 				ev.preventDefault();
 				var delta = Math.max(-1, Math.min(1, (ev.wheelDelta || -ev.deltaY)));
-				_increaseZoom(delta * 15);
+				_adjustZoom(delta * 15);
 			};
 			
 			_container.addEventListener('wheel', _onScroll);
@@ -103,7 +114,7 @@
 			if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
 				var _lastScale = 1;
 				var _onGestureChange = function(ev) {
-					_increaseZoom((ev.scale - _lastScale) * 50);
+					_adjustZoom((ev.scale - _lastScale) * 50);
 					_lastScale = ev.scale;
 				};
 				document.body.addEventListener('gesturestart', function(e) {
@@ -182,16 +193,6 @@
 			}
 		}.bind(this);
 		
-		/**
-		 * sets the z value based on the container size
-		 * @public
-		 */
-		this.resetZ = function() {
-			_cubeZ = (Math.sqrt(_container.clientWidth * _container.clientHeight) / 2.5);
-			
-			_updateCubeTransform();
-			_updatePerspective();
-		};
 		
 		
 		(function init() {
