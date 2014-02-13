@@ -1,6 +1,12 @@
-/* global Impetus */
+// UMD - https://github.com/umdjs/umd/blob/master/amdWeb.js
+(function (root, moduleFactory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['impetus'], moduleFactory);
+	} else {
+		root.Spherical = moduleFactory(root.Impetus);
+	}
+}(this, function (Impetus) {
 
-(function() {
 	var Spherical = function(cfg) {
 		'use strict';
 		
@@ -243,13 +249,5 @@
 		}).bind(this)();
 	};
 	
-	
-	if (typeof define === "function" && define.amd) {
-		define('spherical', ['impetus'], Spherical);
-	} else if (typeof module === "object" && module.exports) {
-		module.exports = Spherical;
-	} else {
-		this.Spherical = Spherical;
-	}
-	
-})();
+	return Spherical;
+}));
