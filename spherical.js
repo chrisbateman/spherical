@@ -9,7 +9,7 @@
 		var _cubeZ;
 		var _cubeRotateX = 0;
 		var _cubeRotateY = 0;
-		var _imp;
+		var _impetus;
 		var _enableFullscreen = true;
 		var _isFullscreen = false;
 		var _fsButton;
@@ -118,15 +118,26 @@
 					_lastScale = ev.scale;
 				};
 				document.body.addEventListener('gesturestart', function(e) {
-					_imp.pause();
+					_impetus.pause();
 					_lastScale = 1;
 				});
 				document.body.addEventListener('gesturechange', _onGestureChange);
 				document.body.addEventListener('gestureend', function(e) {
-					_imp.unpause();
+					_impetus.unpause();
 				});
 			}
 		};
+		
+		var _initFullscreenControls = function() {
+			if (_enableFullscreen && _supportsFullscreenAPI && _fullscreenEnabled) {
+				_fsButton = document.createElement('button');
+				_fsButton.className = 'spherical-fullbutton';
+				_fsButton.onclick = this.toggleFullscreen;
+				_container.appendChild(_fsButton);
+				
+				document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = _onFullscreenChange;
+			}
+		}.bind(this);
 		
 		/**
 		 * cross-browser requestFullscreen
@@ -199,8 +210,8 @@
 			if (!_supportsPreserve3d) return;
 			
 			if (cfg.enableFullscreen === false) _enableFullscreen = false;
-			_container = (typeof cfg.container === 'string') ? document.querySelector(cfg.container) : cfg.container;
 			
+			_container = (typeof cfg.container === 'string') ? document.querySelector(cfg.container) : cfg.container;
 			_container.classList.add('spherical-container');
 			_container.innerHTML = _template(_cubeTemplate, {
 				fImg: cfg.front,
@@ -210,13 +221,12 @@
 				uImg: cfg.top,
 				dImg: cfg.bottom
 			});
-			
 			_cube = _container.querySelector('.spherical-cube');
 			
 			this.resetZ();
 			
 			
-			_imp = new Impetus({
+			_impetus = new Impetus({
 				source: _cube,
 				boundY: [-90, 90],
 				multiplier: 0.2,
@@ -228,15 +238,7 @@
 			});
 			
 			_addZoomControls();
-			
-			if (_enableFullscreen && _supportsFullscreenAPI && _fullscreenEnabled) {
-				_fsButton = document.createElement('button');
-				_fsButton.className = 'spherical-fullbutton';
-				_fsButton.onclick = this.toggleFullscreen;
-				_container.appendChild(_fsButton);
-				
-				document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = _onFullscreenChange;
-			}
+			_initFullscreenControls();
 			
 		}).bind(this)();
 	};
