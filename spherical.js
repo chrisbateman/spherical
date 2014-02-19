@@ -129,7 +129,7 @@
 				});
 				document.body.addEventListener('gesturechange', _onGestureChange);
 				document.body.addEventListener('gestureend', function(e) {
-					_impetus.unpause();
+					_impetus.resume();
 				});
 			}
 		};
