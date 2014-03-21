@@ -50,31 +50,18 @@
 	}
 	
 	header {
-		padding-bottom: 2em;
+		padding: 2em 0;
 		text-align: center;
 	}
 	header h1 {
 		font-family: Raleway;
 		font-weight: 100;
 		font-size: 5em;
-		margin: 0.3em 0;
+		margin: 0 0 0.3em;
 	}
 
-	header .info {
-		letter-spacing: -.31em;
-	}
-	header p,
-	header .cta-container {
-		letter-spacing: normal;
-		display: inline-block;
-		width: 50%;
-		vertical-align: middle;
-	}
 	header p {
-		text-align: left;
-	}
-	header .button {
-		margin: 0.5em 1em;
+		margin-bottom: 2em;
 	}
 	
 	h2 {
@@ -120,11 +107,11 @@
 	<header>
 		<div class="container">
 			<h1>Spherical.js</h1>
-			<div class="info">
+			<div>
 				<p>Display 360x180 panoramas with HTML5.</p>
-				<div class="cta-container">
+				<div>
 					<a class="button" href="spherical.js">Download</a>
-					<a class="button" href="https://github.com/chrisbateman/spherical">GitHub</a>
+					<a class="button" href="https://github.com/chrisbateman/spherical">View on GitHub</a>
 				</div>
 			</div>
 		</div>
@@ -164,7 +151,7 @@
 	
 	
 	<link rel="stylesheet" href="spherical.css" />
-	<script src="https://chrisbateman.github.com/impetus/impetus.min.js"></script>
+	<script src="http://chrisbateman.github.com/impetus/impetus.min.js"></script>
 	<script src="spherical.js"></script>
 	<script>
 	var pano = new Spherical({
