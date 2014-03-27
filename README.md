@@ -23,3 +23,5 @@ new Spherical({
  - Includes full-screen mode for browsers that support the Fullscreen API.
  - Zooming works, but is a bit buggy at the moment.
  - Supports AMD.
+
+This was a lot of fun to build, but if you need something a bit more robust, I'd take a look at [krpano] (http://krpano.com/), or even [three.js] (http://threejs.org/examples/#canvas_geometry_panorama), which can render out to CSS, canvas, or WebGL.
